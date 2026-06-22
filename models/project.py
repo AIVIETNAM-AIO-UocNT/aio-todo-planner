@@ -1,8 +1,7 @@
-import sys
-import os
+
 from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey
 from sqlalchemy.sql import func
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from database import Base
 
 class Project(Base):
