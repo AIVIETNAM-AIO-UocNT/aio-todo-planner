@@ -1,5 +1,5 @@
 altair==5.5.0
-altgraph @ file:///AppleInternal/Library/BuildRoots/bcce998f-ff34-11ef-9d34-f2a857e00a32/Library/Caches/com.apple.xbs/Sources/python3/altgraph-0.17.2-py2.py3-none-any.whl
+altgraph==0.17.2
 anyio==4.12.1
 appnope==0.1.4
 argon2-cffi==25.1.0
@@ -32,7 +32,7 @@ fastjsonschema==2.21.2
 fonttools==4.55.0
 fqdn==1.5.1
 fsspec==2025.10.0
-future @ file:///AppleInternal/Library/BuildRoots/bcce998f-ff34-11ef-9d34-f2a857e00a32/Library/Caches/com.apple.xbs/Sources/python3/future-0.18.2-py3-none-any.whl
+future==0.18.2
 gitdb==4.0.12
 GitPython==3.1.50
 graphviz==0.21
@@ -68,7 +68,7 @@ jupyterlab_widgets==3.0.16
 kiwisolver==1.4.7
 lark==1.3.1
 locket==1.0.0
-macholib @ file:///AppleInternal/Library/BuildRoots/bcce998f-ff34-11ef-9d34-f2a857e00a32/Library/Caches/com.apple.xbs/Sources/python3/macholib-1.15.2-py2.py3-none-any.whl
+macholib==1.15.2
 MarkupSafe==3.0.3
 matplotlib==3.9.2
 matplotlib-inline==0.1.7
@@ -152,3 +152,6 @@ websocket-client==1.9.0
 widgetsnbextension==4.0.15
 xarray==2024.7.0
 zipp==3.20.2
+greenlet==3.5.2
+sqlalchemy==2.0.51
+typing-extensions==4.15.0
