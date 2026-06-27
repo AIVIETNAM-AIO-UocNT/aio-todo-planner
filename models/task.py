@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String, Text
+from sqlalchemy.orm import relationship
 from sqlalchemy import DateTime, Date, ForeignKey, Enum
 from sqlalchemy.sql import func
 
@@ -28,3 +29,10 @@ class Task(Base):
     created_at = Column(DateTime, default=func.now())
     updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
     deleted_at = Column(DateTime)
+
+    labels = relationship(
+        "Label", 
+        secondary="task_labels", 
+        back_populates="tasks", 
+        cascade="all, delete"
+    )
