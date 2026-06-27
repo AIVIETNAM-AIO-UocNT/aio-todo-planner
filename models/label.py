@@ -1,10 +1,6 @@
-import sys
-import os
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-
 from sqlalchemy import Column, Integer, String
 from sqlalchemy import DateTime, ForeignKey
+from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
 from database import Base
@@ -25,3 +21,10 @@ class Label(Base):
 
     created_at = Column(DateTime, default=func.now())
     updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
+
+
+    tasks = relationship(
+        "Task", 
+        secondary="task_labels", 
+        back_populates="labels"
+    )

@@ -1,15 +1,6 @@
-
-from database import Base, engine
-
-from models.user import User
-from models.project import Project
-from models.task import Task
-from models.label import Label
-from models.task_label import TaskLabel
-
-def init_db():
-    Base.metadata.create_all(bind=engine)
-    print("Database initialized successfully!")
-
-if __name__ == "__main__":
-    init_db()
+# models/__init__.py
+from .user import User
+from .project import Project
+from .task import Task
+from .label import Label
+from .task_label import TaskLabel
