@@ -1,7 +1,0 @@
-greenlet
-PyMySQL==1.2.0
-python-dotenv==1.2.1
-SQLAlchemy==2.0.51
-typing_extensions==4.12.2
-fastapi
-uvicorn
