@@ -5,14 +5,14 @@ from pydantic import BaseModel, ConfigDict, EmailStr, field_validator
 
 class UserCreate(BaseModel):
     username: str
-    email: EmailStr  # validate định dạng email, không chấp nhận string tuỳ ý
+    email: EmailStr  # validates email format; rejects arbitrary strings
     password: str
 
     @field_validator("password")
     @classmethod
     def password_min_length(cls, v: str) -> str:
         if len(v) < 6:
-            raise ValueError("Mật khẩu phải có ít nhất 6 ký tự.")
+            raise ValueError("Password must be at least 6 characters.")
         return v
 
 

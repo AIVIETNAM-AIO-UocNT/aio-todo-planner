@@ -6,8 +6,8 @@ from sqlalchemy.orm import declarative_base, sessionmaker
 
 engine = create_engine(
     settings.DATABASE_URL,
-    pool_pre_ping=True,  # avoids "MySQL server has gone away" errors
-    pool_recycle=1800,  # recycle connections after 30 minutes idle
+    pool_pre_ping=True,
+    pool_recycle=1800,  
     pool_size=10,
     max_overflow=20,
     pool_timeout=30,

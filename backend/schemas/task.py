@@ -18,7 +18,7 @@ class TaskCreate(BaseModel):
     description: Optional[str] = None
     deadline: Optional[date] = None
     status: TaskStatus = TaskStatus.TODO
-    label_ids: List[int] = []  # danh sách label_id muốn gán khi tạo task
+    label_ids: List[int] = []  # list of label IDs to assign when creating the task
 
 
 class TaskUpdate(BaseModel):
@@ -26,7 +26,7 @@ class TaskUpdate(BaseModel):
     description: Optional[str] = None
     deadline: Optional[date] = None
     status: Optional[TaskStatus] = None
-    label_ids: Optional[List[int]] = None  # None = không thay đổi labels
+    label_ids: Optional[List[int]] = None  # None = leave existing labels unchanged
 
 
 class TaskResponse(BaseModel):
@@ -36,7 +36,7 @@ class TaskResponse(BaseModel):
     description: Optional[str]
     status: TaskStatus
     deadline: Optional[date]
-    labels: List[LabelResponse] = []  # trả về labels đầy đủ, không chỉ id
+    labels: List[LabelResponse] = []  # returns full label objects, not just IDs
     created_at: datetime
     updated_at: datetime
 

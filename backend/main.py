@@ -31,12 +31,6 @@ app.include_router(dashboard_router)
 
 @app.post("/users", response_model=UserResponse, status_code=201, tags=["Users"])
 def create_user(body: UserCreate, db: Session = Depends(get_db)):
-    """
-    Create a new user.
-    - Email must be valid (validated by Pydantic EmailStr)
-    - Password is bcrypt-hashed before storage
-    - Username and email must be unique
-    """
     if db.query(User).filter(User.email == body.email).first():
         raise HTTPException(status_code=400, detail="Email already in use.")
 
@@ -66,4 +60,4 @@ def get_user(user_id: int, db: Session = Depends(get_db)):
 @app.get("/health", tags=["System"])
 def health():
     """Returns 200 if the server is running."""
-    return {"status": "ok"}
+    return {"status": "Everything is OK!"}

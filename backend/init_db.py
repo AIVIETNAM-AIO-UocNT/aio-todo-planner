@@ -1,17 +1,17 @@
 """
-init_db.py — Tạo tất cả bảng trong MySQL.
+init_db.py — Create all tables in MySQL.
 
-Chỉ chạy một lần khi setup môi trường mới:
+Run once when setting up a new environment:
     python init_db.py
 
-Với bảng đã tồn tại: bỏ qua, không xóa data.
-Với thay đổi schema (thêm cột...): dùng Alembic thay thế.
+Existing tables are skipped; no data is deleted.
+For schema changes (adding columns, etc.): use Alembic instead.
 """
 
 import logging
 import sys
 
-import models  # noqa: F401 — kích hoạt đăng ký tất cả models vào Base.metadata
+import models 
 from database import Base, engine
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
@@ -20,12 +20,12 @@ logger = logging.getLogger(__name__)
 
 def init_db() -> None:
     table_names = list(Base.metadata.tables.keys())
-    logger.info(f"Sẽ tạo các bảng: {', '.join(table_names)}")
+    logger.info(f"Tables to create: {', '.join(table_names)}")
     try:
         Base.metadata.create_all(bind=engine)
-        logger.info("Khởi tạo database thành công.")
+        logger.info("Database initialized successfully.")
     except Exception as e:
-        logger.error(f"Lỗi: {e}")
+        logger.error(f"Error: {e}")
         sys.exit(1)
 
 
