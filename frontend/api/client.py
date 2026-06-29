@@ -1,6 +1,6 @@
 import requests
 
-from frontend.config import settings
+from config import settings
 
 BASE_URL = settings.base_url
 USER_ID = settings.user_id

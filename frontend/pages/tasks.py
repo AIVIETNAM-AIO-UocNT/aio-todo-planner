@@ -5,11 +5,11 @@ pages/tasks.py — Task management in Kanban view
 import streamlit as st
 from datetime import date
 
-from frontend.api.client import (
+from api.client import (
     get_tasks, get_projects, get_labels,
     create_task, update_task, delete_task,
 )
-from frontend.utils.ui import (
+from utils.ui import (
     inject_css, render_sidebar,
     label_pill_html, deadline_badge_html, build_label_map,
 )

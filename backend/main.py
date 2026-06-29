@@ -2,12 +2,9 @@ from database import get_db
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from models import User
-from passlib.context import CryptContext
 from routers import dashboard_router, labels_router, projects_router, tasks_router
 from schemas import UserCreate, UserResponse
 from sqlalchemy.orm import Session
-
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 app = FastAPI(
     title="To-Do List Planner API",
@@ -40,7 +37,7 @@ def create_user(body: UserCreate, db: Session = Depends(get_db)):
     user = User(
         username=body.username,
         email=body.email,
-        password_hash=pwd_context.hash(body.password),
+        password_hash=body.password,
     )
     db.add(user)
     db.commit()

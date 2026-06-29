@@ -5,11 +5,11 @@ Run: streamlit run app.py  (from inside the frontend/ directory)
 
 import streamlit as st
 
-from frontend.api.client import (
+from api.client import (
     get_dashboard_summary, get_projects,
     get_project_progress, get_overdue_tasks, get_labels,
 )
-from frontend.utils.ui import inject_css, render_sidebar, label_pill_html, build_label_map
+from utils.ui import inject_css, render_sidebar, label_pill_html, build_label_map
 
 st.set_page_config(
     page_title="TaskPlanner",

@@ -4,11 +4,11 @@ pages/projects.py — Project management
 
 import streamlit as st
 
-from frontend.api.client import (
+from api.client import (
     get_projects, create_project, update_project,
     delete_project, get_project_progress, get_labels,
 )
-from frontend.utils.ui import inject_css, render_sidebar, build_label_map
+from utils.ui import inject_css, render_sidebar, build_label_map
 
 st.set_page_config(page_title="Projects · TaskPlanner", page_icon="📁", layout="wide")
 inject_css()
