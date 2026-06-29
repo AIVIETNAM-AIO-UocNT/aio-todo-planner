@@ -5,16 +5,18 @@ from datetime import datetime, timezone
 from sqlalchemy import func 
 import database
 from models import (
-    user as user_model, 
-    project as project_model, 
-    task as task_model, 
-    task_label as task_label_model
+    user as user_model,
+    project as project_model,
+    task as task_model,
+    task_label as task_label_model,
+    label as label_model
 )
 
 from schemas import (
-    user as user_schema, 
-    project as project_schema, 
-    task as task_schema
+    user as user_schema,
+    project as project_schema,
+    task as task_schema,
+    label as label_schema
 )
 
 app = FastAPI()
@@ -188,3 +190,125 @@ def delete_task(task_id: int, db: Session = Depends(get_db)):
     task.deleted_at = datetime.now(timezone.utc)
     db.commit()
     return {"message": "Đã xóa Task thành công!"}
+
+
+
+
+@app.post("/users/{user_id}/labels/", response_model=label_schema.LabelResponse)
+def create_label(user_id: int, label: label_schema.LabelCreate, db: Session = Depends(get_db)):
+    user = db.query(user_model.User).filter(user_model.User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User không tồn tại")
+
+    # Kiểm tra trùng tên label trong cùng user
+    existing = db.query(label_model.Label).filter(
+        label_model.Label.user_id == user_id,
+        label_model.Label.name == label.name
+    ).first()
+    if existing:
+        raise HTTPException(status_code=400, detail="Label đã tồn tại")
+
+    new_label = label_model.Label(**label.model_dump(), user_id=user_id)
+    db.add(new_label)
+    db.commit()
+    db.refresh(new_label)
+    return new_label
+
+
+@app.get("/users/{user_id}/labels/", response_model=List[label_schema.LabelResponse])
+def get_user_labels(user_id: int, db: Session = Depends(get_db)):
+    user = db.query(user_model.User).filter(user_model.User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User không tồn tại")
+
+    labels = db.query(label_model.Label).filter(
+        label_model.Label.user_id == user_id
+    ).all()
+    return labels
+
+
+@app.get("/labels/{label_id}", response_model=label_schema.LabelResponse)
+def get_label(label_id: int, db: Session = Depends(get_db)):
+    label = db.query(label_model.Label).filter(
+        label_model.Label.id == label_id
+    ).first()
+
+    if not label:
+        raise HTTPException(status_code=404, detail="Label không tồn tại")
+    return label
+
+
+@app.put("/labels/{label_id}", response_model=label_schema.LabelResponse)
+def update_label(label_id: int, label_update: label_schema.LabelUpdate, db: Session = Depends(get_db)):
+    label = db.query(label_model.Label).filter(
+        label_model.Label.id == label_id
+    ).first()
+
+    if not label:
+        raise HTTPException(status_code=404, detail="Label không tồn tại")
+
+    update_data = label_update.model_dump(exclude_unset=True)
+    for key, value in update_data.items():
+        setattr(label, key, value)
+
+    db.commit()
+    db.refresh(label)
+    return label
+
+
+@app.delete("/labels/{label_id}")
+def delete_label(label_id: int, db: Session = Depends(get_db)):
+    label = db.query(label_model.Label).filter(
+        label_model.Label.id == label_id
+    ).first()
+
+    if not label:
+        raise HTTPException(status_code=404, detail="Label không tồn tại")
+
+    db.delete(label)
+    db.commit()
+    return {"message": "Đã xóa Label thành công!"}
+
+
+
+
+@app.post("/tasks/{task_id}/labels/{label_id}")
+def assign_label_to_task(task_id: int, label_id: int, db: Session = Depends(get_db)):
+    task = db.query(task_model.Task).filter(
+        task_model.Task.id == task_id,
+        task_model.Task.deleted_at.is_(None)
+    ).first()
+    if not task:
+        raise HTTPException(status_code=404, detail="Task không tồn tại")
+
+    label = db.query(label_model.Label).filter(label_model.Label.id == label_id).first()
+    if not label:
+        raise HTTPException(status_code=404, detail="Label không tồn tại")
+
+    # Kiểm tra xem đã gán chưa
+    existing = db.query(task_label_model.TaskLabel).filter(
+        task_label_model.TaskLabel.task_id == task_id,
+        task_label_model.TaskLabel.label_id == label_id
+    ).first()
+    if existing:
+        raise HTTPException(status_code=400, detail="Label đã được gán cho task này")
+
+    task_label = task_label_model.TaskLabel(task_id=task_id, label_id=label_id)
+    db.add(task_label)
+    db.commit()
+    return {"message": "Đã gán Label vào Task thành công!"}
+
+
+@app.delete("/tasks/{task_id}/labels/{label_id}")
+def remove_label_from_task(task_id: int, label_id: int, db: Session = Depends(get_db)):
+    task_label = db.query(task_label_model.TaskLabel).filter(
+        task_label_model.TaskLabel.task_id == task_id,
+        task_label_model.TaskLabel.label_id == label_id
+    ).first()
+
+    if not task_label:
+        raise HTTPException(status_code=404, detail="Label chưa được gán cho task này")
+
+    db.delete(task_label)
+    db.commit()
+    return {"message": "Đã gỡ Label khỏi Task thành công!"}
