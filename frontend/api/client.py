@@ -83,6 +83,9 @@ def create_label(name: str, color: str = "#185FA5"):
     return _api("POST", "/labels/", params={"user_id": USER_ID},
                 json={"name": name, "color": color})
 
+def update_label(label_id: int, name: str, color: str):
+    return _api("PUT", f"/labels/{label_id}", 
+                json={"name": name, "color": color})
 
 def delete_label(label_id: int):
     return _api("DELETE", f"/labels/{label_id}")

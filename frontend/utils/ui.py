@@ -31,6 +31,8 @@ STATUS_COLOR = {
 APP_CSS = """
 <style>
 /* ── Global ── */
+[data-testid="stSidebarNav"] {display: none;}
+[data-testid="stSidebarHeader"] {display: none;}
 [data-testid="stAppViewContainer"] { background: #fafafa; }
 [data-testid="stSidebar"] { background: #f4f4f2 !important; }
 [data-testid="stSidebar"] [data-testid="stMarkdownContainer"] p {
