@@ -1,7 +1,7 @@
 
 import streamlit as st
 
-from api.client import get_labels, get_tasks, create_label, delete_label
+from api.client import get_labels, get_tasks, create_label, update_label, delete_label
 from utils.ui import inject_css, render_sidebar, label_pill_html
 
 st.set_page_config(page_title="Labels · TaskPlanner", page_icon="🏷️", layout="wide")

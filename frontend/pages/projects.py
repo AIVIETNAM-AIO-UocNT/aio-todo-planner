@@ -71,6 +71,8 @@ else:
                 h_col, btn_col = st.columns([5, 2])
                 h_col.markdown(f"### {proj['name']}")
                 with btn_col:
+                    if st.session_state.pop(f"_reset_proj_action_{proj['id']}", False):
+                        st.session_state[f"proj_action_{proj['id']}"] = "—"
                     action = st.selectbox(
                         "Action",
                         ["—", "✏️ Edit", "🗑️ Delete"],
@@ -95,11 +97,13 @@ else:
                 # ── Handle action ────────────────────────────────────────────
                 if action == "✏️ Edit":
                     st.session_state[f"edit_proj_{proj['id']}"] = True
-                    st.session_state[f"proj_action_{proj['id']}"] = "—"
+                    st.session_state[f"_reset_proj_action_{proj['id']}"] = True
+                    st.rerun()
 
                 if action == "🗑️ Delete":
                     st.session_state[f"confirm_del_proj_{proj['id']}"] = True
-                    st.session_state[f"proj_action_{proj['id']}"] = "—"
+                    st.session_state[f"_reset_proj_action_{proj['id']}"] = True
+                    st.rerun()
 
                 # ── Edit form ─────────────────────────────────────────────────
                 if st.session_state.get(f"edit_proj_{proj['id']}"):

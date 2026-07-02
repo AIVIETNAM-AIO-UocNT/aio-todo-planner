@@ -66,11 +66,29 @@ with left:
     st.divider()
 
     st.subheader("📈 Task Status Distribution")
+
     import pandas as pd
     chart_data = pd.DataFrame({
         "Tasks": [summary["todo"], summary["doing"], summary["done"]]
     }, index=["To Do", "Doing", "Done"])
-    st.bar_chart(chart_data, color="#185FA5", height=220)
+    
+    import plotly.express as px
+    status_df = pd.DataFrame({
+        "status": ["To Do", "Doing", "Done"],
+        "count": [summary["todo"], summary["doing"], summary["done"]]
+    })
+    fig = px.bar(status_df, x="status", y="count", color="status",
+                color_discrete_map={"To Do": "#a1a1aa", "Doing": "#3b82f6", "Done": "#22c55e"},
+                text="count")
+    fig.update_layout(
+        showlegend=False,
+        plot_bgcolor="rgba(0,0,0,0)",
+        paper_bgcolor="rgba(0,0,0,0)",
+        margin=dict(t=10, b=10, l=10, r=10),
+        height=280,
+    )
+    fig.update_traces(textposition="outside", marker_line_width=0)
+    st.plotly_chart(fig, use_container_width=True)
 
 with right:
     overdue_count = len(overdue)

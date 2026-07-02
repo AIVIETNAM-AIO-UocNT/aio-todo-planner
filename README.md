@@ -1,59 +1,80 @@
-📅 AIO Todo Planner
+# Hướng dẫn chạy dự án To-Do Planner
 
-Dự án lập kế hoạch công việc (Todo Planner) sử dụng FastAPI cho Backend, Streamlit cho Frontend và quản lý môi trường/package thông qua công cụ hiện đại uv.
+## 1. Chạy Backend
 
-🚀 Hướng dẫn khởi chạy dự án (How to Run)
+Mở *Terminal 1* và di chuyển đến thư mục gốc của dự án:
 
-Để khởi chạy dự án dưới máy local (môi trường phát triển cá nhân), bạn vui lòng thực hiện tuần tự theo các bước chi tiết bên dưới.
+cd to-do-planner
 
-📋 Yêu cầu tiên quyết (Prerequisites)
-
-Đảm bảo máy tính của bạn đã cài đặt công cụ quản lý package uv. Nếu chưa cài đặt, bạn có thể cài nhanh bằng lệnh sau:
-
-# Cài đặt uv qua pip
-pip install uv
-
-
-💻 Các bước thực hiện chi tiết
-
-Bạn cần mở 2 Terminal (Cửa sổ dòng lệnh) riêng biệt và cả 2 cửa sổ đều di chuyển vào thư mục gốc của dự án aio-todo-planner:
-
-cd đường_dẫn_đến/aio-todo-planner
-
-
-🖥️ Terminal 1: Khởi chạy Backend (FastAPI)
-
-Thực hiện lần lượt các câu lệnh sau để cài đặt môi trường, tạo cơ sở dữ liệu và khởi chạy server API:
-
-Khởi tạo môi trường ảo và cài đặt các thư viện cần thiết cho Backend:
+### Bước 1. Cài đặt dependencies
 
 uv sync --directory backend
 
-
-Khởi tạo cơ sở dữ liệu ban đầu (Database Initialization):
+### Bước 2. Khởi tạo cơ sở dữ liệu
 
 uv run --directory backend python init_db.py
 
-
-Bắt đầu chạy Server Backend:
+### Bước 3. Khởi động Backend
 
 uv run --directory backend uvicorn main:app --reload --host localhost --port 8000
 
+Sau khi backend khởi động thành công, mở trình duyệt và truy cập:
 
-Sau khi chạy thành công, tài liệu API (Swagger UI) sẽ có tại địa chỉ: 👉 http://localhost:8000/docs
+http://localhost:8000/docs
 
-🖥️ Terminal 2: Khởi chạy Frontend (Streamlit)
+---
 
-Thực hiện các câu lệnh sau ở cửa sổ dòng lệnh thứ hai để cài đặt môi trường và khởi chạy giao diện người dùng:
+## 2. Tạo người dùng đầu tiên
 
-Khởi tạo môi trường ảo và cài đặt các thư viện cần thiết cho Frontend:
+Trong trang Swagger (/docs):
+
+1. Tìm API **/users**.
+2. Nhấn *Try it out*.
+3. Nhập đầy đủ các thông tin theo yêu cầu.
+4. Nhấn *Execute*.
+5. Kiểm tra kết quả trả về.
+
+**Lưu ý:** Cần tạo người dùng thành công trước khi sử dụng giao diện Frontend.
+
+
+---
+
+## 3. Chạy Frontend
+
+Mở *Terminal 2* (độc lập với Terminal chạy Backend) và đứng tại thư mục gốc của dự án:
+
+cd to-do-planner
+
+### Bước 1. Cài đặt dependencies
 
 uv sync --directory frontend
 
-
-Chạy ứng dụng Frontend với Streamlit:
+### Bước 2. Khởi động Streamlit
 
 uv run --project frontend streamlit run frontend/app.py --server.port 8501
 
+Sau khi chạy thành công, Streamlit sẽ mở trên trình duyệt (thường tại địa chỉ http://localhost:8501).
 
-Sau khi chạy thành công, giao diện ứng dụng sẽ tự động mở ra trên trình duyệt của bạn hoặc truy cập tại địa chỉ: 👉 http://localhost:8501
+---
+
+## 4. Thiết lập giao diện
+
+Sau khi mở giao diện Streamlit:
+
+1. Chuyển giao diện sang chế độ *Light*.
+
+### Lưu ý cho lập trình viên
+
+Hiện tại cần chỉnh sửa trong source code để *Light* trở thành giao diện mặc định khi khởi động ứng dụng, thay vì yêu cầu người dùng tự chuyển mỗi lần sử dụng.
+
+---
+
+# Tóm tắt quy trình
+
+1. Chạy Backend.
+2. Khởi tạo database.
+3. Mở Swagger tại http://localhost:8000/docs.
+4. Tạo ít nhất một người dùng thông qua API /users.
+5. Chạy Frontend.
+6. Mở Streamlit.
+7. Đảm bảo giao diện mặc định là *Light*.
